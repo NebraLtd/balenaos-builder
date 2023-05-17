@@ -4,7 +4,9 @@ This repository contains practical files for building Yocto based BalenaOS for s
 
 ## Prerequisites
 
-To run the image creation script, `create-host-user-group.sh` script has to be run first, if never executed. That's because the Docker container which will create the image will be running in privileged mode and write the artifacts in the output folder. This script creates user ang group called `builder` and passes the ID's to the container. This way file permissions would get adjusted properly.
+To run the image creation script, `create-host-user-group.sh` script has to be run first, if never executed. That's because the Docker container which will create the image will be running in privileged mode and write the artifacts in the output folder. This script creates user and group called `builder` and passes the ID's to the container. This way file permissions would get adjusted properly.
+
+This script has to be run with sudo privileges.
 
 ## Usage
 
@@ -25,9 +27,8 @@ After building the container, the script starts it parametrically and starts bui
 
 ## The Final Image
 
-> TODO This section should be improved after a successful build.
-
-The output image could be found under the output folder.
+The output image could be found under the output folder. The final artifact can be found at `./build/tmp/deploy/images/<BASE_BOARD_NAME>` and has `balena-img` file extension.
 
 ## Notes
 * Ignore the permission error logged at the end of the terminal output. It's caused by the internal balena script, which is trying to write to a log file even though it's not requested. It's not been fixed to stay away from maintenance burden.
+* Since this task takes a lot of time to complete, `screen` shell could be used in an SSH session to gain freedom to login and logout while the final image is getting built on a remote machine.
