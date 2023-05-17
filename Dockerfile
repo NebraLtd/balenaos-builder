@@ -1,0 +1,17 @@
+FROM balena/yocto-build-env:57226ff
+
+ARG TARGET_REPO_NAME
+ARG BASE_BOARD
+ARG BUILDER_GID
+ARG BUILDER_UID
+
+ENV TARGET_REPO_NAME=$TARGET_REPO_NAME
+ENV INSTALL_DIR=/work/$TARGET_REPO_NAME
+ENV BASE_BOARD=$BASE_BOARD
+ENV BUILDER_GID=$BUILDER_GID
+ENV BUILDER_UID=$BUILDER_UID
+
+COPY prepare-and-start.sh /prepare-and-start.sh
+COPY balena-docker.inc /balena-docker.inc
+
+ENTRYPOINT ["../prepare-and-start.sh"]
