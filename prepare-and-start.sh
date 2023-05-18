@@ -41,7 +41,7 @@ mkdir -p /home/builder/.ssh/
 echo "StrictHostKeyChecking no" > /home/builder/.ssh/config
 
 # Clone the target base board repo
-git clone --depth 1 --recursive "https://github.com/balena-os/$TARGET_REPO_NAME.git" /work/tmp-repo
+git clone -b "$GIT_BRANCH" --single-branch --depth 1 --recursive "https://github.com/NebraLtd/$TARGET_REPO_NAME.git" /work/tmp-repo
 mv /work/tmp-repo/* "$INSTALL_DIR"
 
 # Fixing a strange bug, which happened on the VPS. The docker image had created a new user with 1001 id and

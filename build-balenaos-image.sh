@@ -3,20 +3,23 @@
 BASE_BOARD=""
 TARGET_REPO_NAME=""
 OUTPUT_FOLDER="build"
+GIT_BRANCH="main"
 
 ERROR_PARAM=1
 ERROR_UNSUPPORTED_PLATFORM=2
 
 usage () {
-    printf  "USAGE:"
-    printf  "./build-balenaos-image.sh [-b <base-board-name>] [-o <output-folder-path>]\n"
-    printf "OPTIONS:"
-    printf "    -b base-board"
-    printf "        orange-pi-zero"
-    printf "    -o output-folder"
-    printf "        Any valid absolute or relative path"
-    printf "    -h"
-    printf "        Prints this help."
+    printf  "USAGE:\n"
+    printf  "./build-balenaos-image.sh [-b <base-board-name>] [-o <output-folder-path>] [-g <git-branch>]\n"
+    printf "OPTIONS:\n"
+    printf "    -b base-board\n"
+    printf "        orange-pi-zero, orange-pi-zero2\n"
+    printf "    -o output-folder\n"
+    printf "        Any valid absolute or relative path\n"
+    printf "    -g git-branch\n"
+    printf "        The branch for the target repository. If omitted 'main' will be used.\n"
+    printf "    -h\n"
+    printf "        Prints this help.\n"
 }
 
 # Parse the command line options and validate.
@@ -28,6 +31,10 @@ while getopts 'b:o:h' opt; do
 
     o)
         OUTPUT_FOLDER="$OPTARG"
+        ;;
+
+    g)
+        GIT_BRANCH="$OPTARG"
         ;;
 
     h)
@@ -49,13 +56,18 @@ shift "$((OPTIND - 1))"
 if [ "$BASE_BOARD" = "" ]; then
     printf "Error: Base board parameter is mandatory.\n"
     exit $ERROR_PARAM
-elif [ "$BASE_BOARD" = "orange-pi-zero" ]; then
+elif [ "$BASE_BOARD" = "orange-pi-zero" ] || [ "$BASE_BOARD" = "orange-pi-zero2" ]; then
     TARGET_REPO_NAME="balena-allwinner"
 fi
 
 if [ "$TARGET_REPO_NAME" = "" ]; then
     printf "Error: The specified base device is not supported.\n"
     exit $ERROR_UNSUPPORTED_PLATFORM
+fi
+
+if [ "$GIT_BRANCH" = "" ]; then
+    printf "Error: Git branch name cannot be empty.\n"
+    exit $ERROR_PARAM
 fi
 
 printf "Building BalenaOS image for %s...\n" "$BASE_BOARD"
@@ -92,6 +104,7 @@ docker build \
     --build-arg BASE_BOARD="$BASE_BOARD" \
     --build-arg BUILDER_GID="$BUILDER_GID" \
     --build-arg BUILDER_UID="$BUILDER_UID" \
+    --build-art GIT_BRANCH="$GIT_BRANCH" \
     -t balenaos-builder-$TARGET_REPO_NAME .
 
 printf "Starting image build via running docker image. This would take some time...\n"
