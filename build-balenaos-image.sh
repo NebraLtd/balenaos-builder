@@ -23,7 +23,7 @@ usage () {
 }
 
 # Parse the command line options and validate.
-while getopts 'b:o:h' opt; do
+while getopts 'b:o:g:h' opt; do
   case "$opt" in
     b)
         BASE_BOARD="$OPTARG"
