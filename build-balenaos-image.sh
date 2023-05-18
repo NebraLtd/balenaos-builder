@@ -104,7 +104,7 @@ docker build \
     --build-arg BASE_BOARD="$BASE_BOARD" \
     --build-arg BUILDER_GID="$BUILDER_GID" \
     --build-arg BUILDER_UID="$BUILDER_UID" \
-    --build-art GIT_BRANCH="$GIT_BRANCH" \
+    --build-arg GIT_BRANCH="$GIT_BRANCH" \
     --no-cache \
     -t balenaos-builder-$TARGET_REPO_NAME .
 
