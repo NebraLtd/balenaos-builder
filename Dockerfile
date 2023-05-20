@@ -1,5 +1,9 @@
 FROM balena/yocto-build-env:57226ff
 
+ENV DOCKER_VERSION="5:20.10.24~3-0~ubuntu-bionic"
+RUN apt-get update && apt-get install -y docker-ce=${DOCKER_VERSION} docker-ce-cli=${DOCKER_VERSION} containerd.io && rm -rf /var/lib/apt/lists/*
+VOLUME /var/lib/docker
+
 ARG TARGET_REPO_NAME
 ARG BASE_BOARD
 ARG BUILDER_GID

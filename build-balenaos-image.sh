@@ -13,7 +13,7 @@ usage () {
     printf  "./build-balenaos-image.sh [-b <base-board-name>] [-o <output-folder-path>] [-g <git-branch>]\n"
     printf "OPTIONS:\n"
     printf "    -b base-board\n"
-    printf "        orange-pi-zero, orange-pi-zero2\n"
+    printf "        orange-pi-zero, orange-pi-zero2, bobcat-px30\n"
     printf "    -o output-folder\n"
     printf "        Any valid absolute or relative path\n"
     printf "    -g git-branch\n"
@@ -58,6 +58,8 @@ if [ "$BASE_BOARD" = "" ]; then
     exit $ERROR_PARAM
 elif [ "$BASE_BOARD" = "orange-pi-zero" ] || [ "$BASE_BOARD" = "orange-pi-zero2" ]; then
     TARGET_REPO_NAME="balena-allwinner"
+elif [ "$BASE_BOARD" = "bobcat-px30" ]; then
+    TARGET_REPO_NAME="balena-bobcat-px30"
 fi
 
 if [ "$TARGET_REPO_NAME" = "" ]; then
@@ -105,7 +107,6 @@ docker build \
     --build-arg BUILDER_GID="$BUILDER_GID" \
     --build-arg BUILDER_UID="$BUILDER_UID" \
     --build-arg GIT_BRANCH="$GIT_BRANCH" \
-    --no-cache \
     -t balenaos-builder-$TARGET_REPO_NAME .
 
 printf "Starting image build via running docker image. This would take some time...\n"
