@@ -42,7 +42,6 @@ echo "StrictHostKeyChecking no" > /home/builder/.ssh/config
 
 # Clone the target base board repo
 printf "Cloning %s repo on %s branch...\n" "$TARGET_REPO_NAME" "$GIT_BRANCH"
-printf "DBG: git clone -b %s --single-branch --depth 1 --recursive \"https://github.com/NebraLtd/%s.git\" /work/tmp-repo\n" "$GIT_BRANCH" "$TARGET_REPO_NAME"
 git clone -b "$GIT_BRANCH" --single-branch --depth 1 --recursive "https://github.com/NebraLtd/$TARGET_REPO_NAME.git" /work/tmp-repo
 mv /work/tmp-repo/* "$INSTALL_DIR"
 

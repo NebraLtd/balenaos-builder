@@ -13,7 +13,7 @@ usage () {
     printf  "./build-balenaos-image.sh [-b <base-board-name>] [-o <output-folder-path>] [-g <git-branch>]\n"
     printf "OPTIONS:\n"
     printf "    -b base-board\n"
-    printf "        orange-pi-zero, orange-pi-zero2, bobcat-px30\n"
+    printf "        orange-pi-zero, bobcat-px30\n"
     printf "    -o output-folder\n"
     printf "        Any valid absolute or relative path\n"
     printf "    -g git-branch\n"
@@ -56,7 +56,7 @@ shift "$((OPTIND - 1))"
 if [ "$BASE_BOARD" = "" ]; then
     printf "Error: Base board parameter is mandatory.\n"
     exit $ERROR_PARAM
-elif [ "$BASE_BOARD" = "orange-pi-zero" ] || [ "$BASE_BOARD" = "orange-pi-zero2" ]; then
+elif [ "$BASE_BOARD" = "orange-pi-zero" ]; then
     TARGET_REPO_NAME="balena-allwinner"
 elif [ "$BASE_BOARD" = "bobcat-px30" ]; then
     TARGET_REPO_NAME="balena-bobcat-px30"
