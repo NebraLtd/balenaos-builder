@@ -41,9 +41,31 @@ mkdir -p /home/builder/.ssh/
 echo "StrictHostKeyChecking no" > /home/builder/.ssh/config
 
 # Clone the target base board repo
-printf "Cloning %s repo on %s branch...\n" "$TARGET_REPO_NAME" "$GIT_BRANCH"
-git clone -b "$GIT_BRANCH" --single-branch --depth 1 --recursive "https://github.com/NebraLtd/$TARGET_REPO_NAME.git" /work/tmp-repo
-mv /work/tmp-repo/* "$INSTALL_DIR"
+# printf "Cloning %s repo on %s branch...\n" "$TARGET_REPO_NAME" "$GIT_BRANCH"
+# git clone -b "$GIT_BRANCH" --single-branch --depth 1 --recursive "https://github.com/NebraLtd/$TARGET_REPO_NAME.git" /work/tmp-repo
+# mv /work/tmp-repo/* "$INSTALL_DIR"
+if [ -d "/work/$TARGET_REPO_NAME" ]; then
+    printf "Repo already exists. Pulling latest changes.\n"
+    sudo -H -u builder -g builder git --git-dir="/work/$TARGET_REPO_NAME/.git" --work-tree="/work/$TARGET_REPO_NAME" checkout "$GIT_BRANCH"
+    sudo -H -u builder -g builder git --git-dir="/work/$TARGET_REPO_NAME/.git" --work-tree="/work/$TARGET_REPO_NAME" pull --force
+    sudo -H -u builder -g builder git --git-dir="/work/$TARGET_REPO_NAME/.git" --work-tree="/work/$TARGET_REPO_NAME" reset --hard HEAD
+else
+    printf "Cloning %s repo on %s branch...\n" "$TARGET_REPO_NAME" "$GIT_BRANCH"
+    sudo -H -u builder -g builder git clone -b "$GIT_BRANCH" --single-branch --depth 1 --recursive "https://github.com/NebraLtd/$TARGET_REPO_NAME.git" "/work/$TARGET_REPO_NAME"
+fi
+
+if [ ! -d "/work/$TARGET_REPO_NAME/build" ]; then
+    printf "Creating build folder.\n"
+    sudo -H -u builder -g builder mkdir -p "/work/$TARGET_REPO_NAME/build"
+fi
+
+# TODO test start
+chmod +x "$INSTALL_DIR/barys"
+cp "$INSTALL_DIR/barys" "$INSTALL_DIR/balena-yocto-scripts/build"
+chmod +x "$INSTALL_DIR/generate-conf-notes.sh"
+cp "$INSTALL_DIR/generate-conf-notes.sh" "$INSTALL_DIR/balena-yocto-scripts/build"
+cp "$INSTALL_DIR/oe-setup-builddir" "$INSTALL_DIR/layers/poky/scripts"
+# TODO test end
 
 # Fixing a strange bug, which happened on the VPS. The docker image had created a new user with 1001 id and
 # made the build folder owned by it. This has created build issues.
@@ -62,9 +84,9 @@ sudo -H -u builder -g builder git config --get user.email
 # Start barys with all the arguments requested
 echo "[INFO] Running build as builder user..."
 if [ -d "${INSTALL_DIR}/balena-yocto-scripts" ]; then
-    sudo -H -u builder -g builder "${INSTALL_DIR}/balena-yocto-scripts/build/barys" "-m" "$BASE_BOARD" &
+    sudo -H -u builder -g builder "${INSTALL_DIR}/balena-yocto-scripts/build/barys" "-m" "$BASE_BOARD" "-l" &
 else
-    sudo -H -u builder -g builder "${INSTALL_DIR}/resin-yocto-scripts/build/barys" "-m" "$BASE_BOARD" &
+    sudo -H -u builder -g builder "${INSTALL_DIR}/resin-yocto-scripts/build/barys" "-m" "$BASE_BOARD" "-l" &
 fi
 
 barys_pid=$!

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 BASE_BOARD=""
 TARGET_REPO_NAME=""
@@ -9,11 +9,11 @@ ERROR_PARAM=1
 ERROR_UNSUPPORTED_PLATFORM=2
 
 usage () {
-    printf  "USAGE:\n"
-    printf  "./build-balenaos-image.sh [-b <base-board-name>] [-o <output-folder-path>] [-g <git-branch>]\n"
+    printf "USAGE:\n"
+    printf "./build-balenaos-image.sh [-b <base-board-name>] [-o <output-folder-path>] [-g <git-branch>]\n"
     printf "OPTIONS:\n"
     printf "    -b base-board\n"
-    printf "        orange-pi-zero, bobcat-px30\n"
+    printf "        orange-pi-zero, orange-pi-zero2, bobcat-px30\n"
     printf "    -o output-folder\n"
     printf "        Any valid absolute or relative path\n"
     printf "    -g git-branch\n"
@@ -56,7 +56,7 @@ shift "$((OPTIND - 1))"
 if [ "$BASE_BOARD" = "" ]; then
     printf "Error: Base board parameter is mandatory.\n"
     exit $ERROR_PARAM
-elif [ "$BASE_BOARD" = "orange-pi-zero" ]; then
+elif [ "$BASE_BOARD" = "orange-pi-zero" ] || [ "$BASE_BOARD" = "orange-pi-zero2" ]; then
     TARGET_REPO_NAME="balena-allwinner"
 elif [ "$BASE_BOARD" = "bobcat-px30" ]; then
     TARGET_REPO_NAME="balena-bobcat-px30"
@@ -79,7 +79,7 @@ printf "Starting at %s\n" "$NOW"
 
 echo "Creating builder group"
 if ! (grep builder < "/etc/group") > /dev/null; then
-    printf "Please run 'create-host-user-group.sh' first with sudo privileges\n"
+    printf "Please run 'create-host-user-group.sh' first with sudo privileges.\n"
     exit 3
 fi
 
@@ -112,7 +112,7 @@ docker build \
 printf "Starting image build via running docker image. This would take some time...\n"
 docker run \
     --privileged \
-    --mount type=bind,source="$OUTPUT_FOLDER",target=/work/$TARGET_REPO_NAME/build \
+    --mount type=bind,source="$OUTPUT_FOLDER",target=/work \
     -it balenaos-builder-$TARGET_REPO_NAME
 
 NOW=$(date)
