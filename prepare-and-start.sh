@@ -60,11 +60,11 @@ if [ ! -d "/work/$TARGET_REPO_NAME/build" ]; then
 fi
 
 # TODO test start
-chmod +x "$INSTALL_DIR/barys"
-cp "$INSTALL_DIR/barys" "$INSTALL_DIR/balena-yocto-scripts/build"
-chmod +x "$INSTALL_DIR/generate-conf-notes.sh"
-cp "$INSTALL_DIR/generate-conf-notes.sh" "$INSTALL_DIR/balena-yocto-scripts/build"
-cp "$INSTALL_DIR/oe-setup-builddir" "$INSTALL_DIR/layers/poky/scripts"
+# chmod +x "$INSTALL_DIR/barys"
+# cp "$INSTALL_DIR/barys" "$INSTALL_DIR/balena-yocto-scripts/build"
+# chmod +x "$INSTALL_DIR/generate-conf-notes.sh"
+# cp "$INSTALL_DIR/generate-conf-notes.sh" "$INSTALL_DIR/balena-yocto-scripts/build"
+# cp "$INSTALL_DIR/oe-setup-builddir" "$INSTALL_DIR/layers/poky/scripts"
 # TODO test end
 
 # Fixing a strange bug, which happened on the VPS. The docker image had created a new user with 1001 id and
