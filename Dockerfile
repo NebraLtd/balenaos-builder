@@ -18,8 +18,12 @@ ENV BUILDER_UID=$BUILDER_UID
 ENV GIT_BRANCH=$GIT_BRANCH
 
 RUN apt-get update \
-    && apt-get -y remove gcc-7 \
-    && apt-get -y --no-install-recommends install python3.8=3.8.0-3ubuntu1~18.04.2 gcc-8=8.4.0-1ubuntu1~18.04 \
+    && apt-get -y remove gcc-7 g++-7 \
+    && apt-get -y --no-install-recommends install python3.8=3.8.0-3ubuntu1~18.04.2 gcc-8=8.4.0-1ubuntu1~18.04 g++-8=8.4.0-1ubuntu1~18.04 software-properties-common \
+    && add-apt-repository -y ppa:ubuntu-toolchain-r/test \
+    && apt-get update \
+    && apt-get -y --no-install-recommends install gcc-8 g++-8 \
+    && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-8 100 --slave /usr/bin/g++ g++ /usr/bin/g++-8 --slave /usr/bin/gcov gcov /usr/bin/gcov-8 \
     && mv /usr/bin/python /usr/bin/python3.6 \
     && ln -s "$(which python3.8)" /usr/bin/python \
     && rm /usr/bin/python3 \
