@@ -18,7 +18,7 @@ ENV BUILDER_UID=$BUILDER_UID
 ENV GIT_BRANCH=$GIT_BRANCH
 
 RUN apt-get update \
-    && apt-get remove gcc-7 \
+    && apt-get -y remove gcc-7 \
     && apt-get -y --no-install-recommends install python3.8=3.8.0-3ubuntu1~18.04.2 gcc-8=8.4.0-1ubuntu1~18.04 \
     && mv /usr/bin/python /usr/bin/python3.6 \
     && ln -s "$(which python3.8)" /usr/bin/python \
