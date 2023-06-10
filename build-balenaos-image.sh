@@ -107,7 +107,6 @@ docker build \
     --build-arg BUILDER_GID="$BUILDER_GID" \
     --build-arg BUILDER_UID="$BUILDER_UID" \
     --build-arg GIT_BRANCH="$GIT_BRANCH" \
-    --no-cache \
     -t balenaos-builder-$TARGET_REPO_NAME .
 
 printf "Starting image build via running docker image. This would take some time...\n"
