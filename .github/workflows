@@ -1,0 +1,34 @@
+name: Build Bobcat PX30 Image
+
+on:
+  workflow_dispatch:
+
+jobs:
+   build:
+    runs-on:
+      labels: 64core-ubuntu
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Build image
+        run: |
+          mkdir build
+          sudo create-host-user-group.sh
+          ./build-balenaos-image.sh -b bobcat-px30 -o build
+    
+      - name: Upload image artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: bobcat-px30.img
+          path: ./build/tmp/deploy/images/bobcat-px30.balena-img
+
+      - name: Upload final image to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ./build/tmp/deploy/images/bobcat-px30.balena-img
+          asset_name: bobcat-px30.img
+          tag: test
+          overwrite: true
+          body: "This is test release"
