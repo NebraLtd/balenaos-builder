@@ -14,7 +14,7 @@ jobs:
       - name: Build image
         run: |
           mkdir build
-          sudo create-host-user-group.sh
+          sudo ./create-host-user-group.sh
           ./build-balenaos-image.sh -b bobcat-px30 -o build
     
       - name: Upload image artifact
