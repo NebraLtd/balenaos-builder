@@ -15,19 +15,20 @@ jobs:
         run: |
           mkdir build
           sudo ./create-host-user-group.sh
+          git config --global url."https://x-token-auth:{{ secrets.MR_BUMP }}@github.com/NebraLtd/balena-bobcat-px30".InsteadOf https://github.com/NebraLtd/balena-bobcat-px30
           ./build-balenaos-image.sh -b bobcat-px30 -o build
     
       - name: Upload image artifact
         uses: actions/upload-artifact@v3
         with:
           name: bobcat-px30.img
-          path: ./build/tmp/deploy/images/bobcat-px30.balena-img
+          path: build/tmp/deploy/images/bobcat-px30.balena-img
 
       - name: Upload final image to release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ./build/tmp/deploy/images/bobcat-px30.balena-img
+          file: build/tmp/deploy/images/bobcat-px30.balena-img
           asset_name: bobcat-px30.img
           tag: test
           overwrite: true
