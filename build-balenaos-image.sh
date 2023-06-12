@@ -113,7 +113,7 @@ printf "Starting image build via running docker image. This would take some time
 docker run \
     --privileged \
     --mount type=bind,source="$OUTPUT_FOLDER",target=/work/$TARGET_REPO_NAME/build \
-    --rm -it balenaos-builder-$TARGET_REPO_NAME
+    -t balenaos-builder-$TARGET_REPO_NAME
 
 NOW=$(date)
 printf "Finished at %s\n" "$NOW"
