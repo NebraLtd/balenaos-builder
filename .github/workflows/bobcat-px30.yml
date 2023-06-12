@@ -15,7 +15,7 @@ jobs:
         run: |
           mkdir build
           sudo ./create-host-user-group.sh
-          git config --global url."https://x-token-auth:${{ secrets.MR_BUMP }}@github.com/NebraLtd/balena-bobcat-px30".InsteadOf https://github.com/NebraLtd/balena-bobcat-px30
+          git config --global url."https://x-token-auth:${{ secrets.MR_BUMP }}@github.com/NebraLtd/balena-bobcat-px30.git".InsteadOf https://github.com/NebraLtd/balena-bobcat-px30.git
           ./build-balenaos-image.sh -b bobcat-px30 -o build
     
       - name: Upload image artifact
