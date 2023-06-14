@@ -19,7 +19,7 @@ ENV GIT_BRANCH=$GIT_BRANCH
 
 RUN apt-get update \
     && apt-get -y remove gcc-7 g++-7 \
-    && apt-get -y --no-install-recommends install python3.8=3.8.0-3ubuntu1~18.04.2 gcc-8=8.4.0-1ubuntu1~18.04 g++-8=8.4.0-1ubuntu1~18.04 software-properties-common \
+    && apt-get -y --no-install-recommends install python3.8=3.8.0-3ubuntu1~18.04.2 gcc-8=8.4.0-1ubuntu1~18.04 g++-8=8.4.0-1ubuntu1~18.04 software-properties-common gettext \
     && add-apt-repository -y ppa:ubuntu-toolchain-r/test \
     && apt-get update \
     && apt-get -y --no-install-recommends install gcc-8 g++-8 \
