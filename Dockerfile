@@ -34,4 +34,4 @@ RUN apt-get update \
 COPY prepare-and-start.sh /prepare-and-start.sh
 COPY balena-docker.inc /balena-docker.inc
 
-# ENTRYPOINT ["../prepare-and-start.sh"]
+# ENTRYPOINT ["../prepare-and-start.sh 2>&1 | tee build.log"]
