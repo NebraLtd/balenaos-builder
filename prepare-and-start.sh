@@ -46,9 +46,13 @@ echo "StrictHostKeyChecking no" > /home/builder/.ssh/config
 # mv /work/tmp-repo/* "$INSTALL_DIR"
 if [ -d "/work/$TARGET_REPO_NAME" ]; then
     printf "Repo already exists. Pulling latest changes.\n"
-    sudo -H -u builder -g builder git --git-dir="/work/$TARGET_REPO_NAME/.git" --work-tree="/work/$TARGET_REPO_NAME" checkout "$GIT_BRANCH"
-    sudo -H -u builder -g builder git --git-dir="/work/$TARGET_REPO_NAME/.git" --work-tree="/work/$TARGET_REPO_NAME" pull --force
-    sudo -H -u builder -g builder git --git-dir="/work/$TARGET_REPO_NAME/.git" --work-tree="/work/$TARGET_REPO_NAME" reset --hard HEAD
+    cd "/work/$TARGET_REPO_NAME" || true
+    sudo -H -u builder -g builder git checkout "$GIT_BRANCH"
+    sudo -H -u builder -g builder git pull --force
+    sudo -H -u builder -g builder git reset --hard HEAD
+    sudo -H -u builder git submodule update --recursive
+    sudo -H -u builder git submodule sync
+    cd "/work" || true
 else
     printf "Cloning %s repo on %s branch...\n" "$TARGET_REPO_NAME" "$GIT_BRANCH"
     sudo -H -u builder -g builder git clone -b "$GIT_BRANCH" --single-branch --depth 1 --recursive "https://github.com/NebraLtd/$TARGET_REPO_NAME.git" "/work/$TARGET_REPO_NAME"
