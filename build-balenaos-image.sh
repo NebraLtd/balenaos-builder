@@ -13,7 +13,7 @@ usage () {
     printf  "./build-balenaos-image.sh [-b <base-board-name>] [-o <output-folder-path>] [-g <git-branch>]\n"
     printf "OPTIONS:\n"
     printf "    -b base-board\n"
-    printf "        orange-pi-zero, bobcat-px30\n"
+    printf "        orange-pi-zero, bobcat-px30, bobcat-rk3566, linxdot-rk3566\n"
     printf "    -o output-folder\n"
     printf "        Any valid absolute or relative path\n"
     printf "    -g git-branch\n"
@@ -60,6 +60,10 @@ elif [ "$BASE_BOARD" = "orange-pi-zero" ]; then
     TARGET_REPO_NAME="balena-allwinner"
 elif [ "$BASE_BOARD" = "bobcat-px30" ]; then
     TARGET_REPO_NAME="balena-bobcat-px30"
+elif [ "$BASE_BOARD" = "bobcat-rk3566" ]; then
+    TARGET_REPO_NAME="balena-bobcat-rk3566"
+elif [ "$BASE_BOARD" = "linxdot-rk3566" ]; then
+    TARGET_REPO_NAME="balena-linxdot-rk3566"
 fi
 
 if [ "$TARGET_REPO_NAME" = "" ]; then
